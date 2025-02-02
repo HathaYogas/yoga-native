@@ -2,6 +2,15 @@
 
 이 애플리케이션은 React Native와 Expo를 사용하여 개발되었습니다.
 
+[사전 설치]
+```bash
+#이미 설치되었을 경우, 생략
+npm install -g eas-cli # eas build
+xCode # ios build
+AndroidStudio # android build
+```
+
+[시작하기]
 ```bash
 npm install
 npm start
@@ -24,6 +33,8 @@ npm start
 - `npm run test:watch`: Jest를 사용하여 테스트를 감시 모드로 실행합니다.
 - `npm run test:coverage`: Jest를 사용하여 테스트 커버리지를 확인합니다.
 - `npm run reset-project`: 프로젝트를 초기화합니다.
+- `npm run build:android`: Android APK를 빌드합니다.
+- `npm run build:ios`: iOS 앱을 빌드합니다.
 
 ## 🔧 주요 개발 도구 및 설정
 

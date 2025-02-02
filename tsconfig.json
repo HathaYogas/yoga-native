@@ -1,17 +1,23 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true,
-    "paths": {
-      "@/*": [
-        "./*"
-      ]
-    }
-  },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    ".expo/types/**/*.ts",
-    "expo-env.d.ts"
-  ]
+      "strict": true,
+      "baseUrl": "./app",
+      "paths": {
+        "@/*": ["*"],
+        "assets/*": ["../assets/*"], // assets 폴더 접근
+        "android/*": ["../android/*"], // android 폴더 접근
+        "ios/*": ["../ios/*"] // ios 폴더 접근
+      },
+      "esModuleInterop": true,
+      "target": "esnext", // 또는 "es2020"
+      "module": "esnext", // 동적 import를 지원하는 모듈 설정
+      "jsx": "react-native",
+    },
+    "include": [
+      "**/*.ts",
+      "**/*.tsx",
+      ".expo/types/**/*.ts",
+      "expo-env.d.ts"
+    ]
 }
