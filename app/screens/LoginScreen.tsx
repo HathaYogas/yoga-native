@@ -4,6 +4,7 @@ import { FormInput } from '../shared/components/Input/Input';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { asyncHandler } from '../utils/asyncHandler';
+import { ErrorMessage } from '@hookform/error-message';
 
 // Define the type for your form data
 interface LoginForm {
@@ -16,29 +17,32 @@ const LoginScreen = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginForm>(); // Use the defined type here
+  } = useForm<LoginForm>({
+    defaultValues: {
+      id: '',
+      password: '',
+    },
+  }); // Use the defined type here
+
   const [message, setMessage] = useState('');
 
   const onSubmit = async (data: LoginForm) => {
-    if (!data.id) {
-      setMessage('id가 없다');
-      return;
+    try {
+      await asyncHandler(
+        () =>
+          axios.get('/api/login', {
+            params: { id: data.id, pw: data.password },
+          }),
+        (responseData) => {
+          setMessage(responseData.data.message);
+        },
+        () => {
+          setMessage('로그인 실패');
+        }
+      );
+    } catch (error) {
+      setMessage(error as string);
     }
-    if (!data.password) {
-      setMessage('pw가 없다');
-      return;
-    }
-
-    await asyncHandler(
-      () =>
-        axios.get('/api/login', { params: { id: data.id, pw: data.password } }),
-      (responseData) => {
-        setMessage(responseData.data.message);
-      },
-      () => {
-        setMessage('로그인 실패');
-      }
-    );
   };
 
   return (
@@ -48,18 +52,28 @@ const LoginScreen = () => {
         label="아이디"
         placeholder="아이디"
         name="id"
+        rules={{ required: '아이디를 입력하세요' }}
         control={control}
       />
-      {errors.id && <Text style={styles.errorText}>{message}</Text>}
+      <ErrorMessage
+        errors={errors}
+        name="id"
+        render={({ message }) => (
+          <Text style={styles.errorText}>{message}</Text>
+        )}
+      />
 
       <FormInput
         label="비밀번호"
         placeholder="비밀번호"
         name="password"
         control={control}
+        rules={{ required: '비밀번호를 입력하세요' }}
         secureTextEntry
       />
-      {errors.password && <Text style={styles.errorText}>{message}</Text>}
+      {errors.password && (
+        <Text style={styles.errorText}>{errors.password.message}</Text>
+      )}
 
       <Button title="로그인" onPress={handleSubmit(onSubmit)} />
       {message && <Text>{message}</Text>}

@@ -1,5 +1,9 @@
 import React from 'react';
-import { Control, useController } from 'react-hook-form';
+import {
+  useController,
+  UseControllerProps,
+  FieldValues,
+} from 'react-hook-form';
 import { TextInput, StyleSheet, TextInputProps } from 'react-native';
 import { Text } from 'react-native';
 
@@ -7,9 +11,10 @@ interface InputProps extends TextInputProps {
   label?: string;
 }
 
-interface FormInputProps extends InputProps {
-  name: string;
-  control: Control<any>;
+interface FormInputProps<T extends FieldValues>
+  extends UseControllerProps<T>,
+    Omit<TextInputProps, 'defaultValue'> {
+  label?: string;
 }
 
 const Input: React.FC<InputProps> = ({ label, ...props }) => {
@@ -21,16 +26,19 @@ const Input: React.FC<InputProps> = ({ label, ...props }) => {
   );
 };
 
-const FormInput: React.FC<FormInputProps> = ({
+const FormInput = <T extends FieldValues>({
   label,
   name,
   control,
+  rules,
+  defaultValue,
   ...props
-}) => {
-  const { field } = useController({
+}: FormInputProps<T>) => {
+  const { field } = useController<T>({
     control,
-    defaultValue: '',
     name,
+    rules,
+    defaultValue,
   });
 
   return (
