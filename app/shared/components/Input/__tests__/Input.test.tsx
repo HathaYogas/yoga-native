@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
-import Input from '../Input';
+import { Input } from '../Input';
 
 describe('Input 컴포넌트 테스트', () => {
   it('입력 필드가 올바르게 렌더링된다.', () => {
