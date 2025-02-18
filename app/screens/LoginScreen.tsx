@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { FormInput } from '../shared/components/Input/Input';
-import axios from 'axios';
 import { useForm } from 'react-hook-form';
-import { asyncHandler } from '../utils/asyncHandler';
 import { ErrorMessage } from '@hookform/error-message';
+import { useAuthStore } from '../store/useAuthStore';
+import axiosInstance from '../shared/utils/axiosInstance';
 
 // Define the type for your form data
 interface LoginForm {
@@ -25,23 +25,19 @@ const LoginScreen = () => {
   }); // Use the defined type here
 
   const [message, setMessage] = useState('');
+  const login = useAuthStore((state) => state.login);
 
   const onSubmit = async (data: LoginForm) => {
     try {
-      await asyncHandler(
-        () =>
-          axios.get('/api/login', {
-            params: { id: data.id, pw: data.password },
-          }),
-        (responseData) => {
-          setMessage(responseData.data.message);
-        },
-        () => {
-          setMessage('로그인 실패');
-        }
-      );
+      await axiosInstance.post('/api/login', {
+        id: data.id,
+        password: data.password,
+      });
+
+      // 서버가 쿠키를 설정하므로, 단순히 로그인 상태만 변경
+      login();
     } catch (error) {
-      setMessage(error as string);
+      setMessage('로그인 실패');
     }
   };
 
