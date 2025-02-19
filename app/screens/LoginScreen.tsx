@@ -5,9 +5,11 @@ import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import { useAuthStore } from '../store/useAuthStore';
 import axiosInstance from '../shared/utils/axiosInstance';
-import navigatorParams from '@/navigation/navigation';
+import {
+  navigatorParams,
+  NavigatorStackParamList,
+} from '@/navigation/navigation';
 import { StackScreenProps } from '@react-navigation/stack';
-import { NavigatorStackParamList } from '@/rootLayout';
 
 // Define the type for your form data
 interface LoginForm {

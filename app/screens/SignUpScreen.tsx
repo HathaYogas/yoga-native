@@ -3,16 +3,19 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import { FormInput } from '../shared/components/Input/Input';
+import { FormRadioButton } from '../shared/components/RadioButton/RadioButton';
 import axiosInstance from '../shared/utils/axiosInstance';
 import { StackScreenProps } from '@react-navigation/stack';
-import { NavigatorStackParamList } from '@/rootLayout';
-import navigatorParams from '@/navigation/navigation';
+import {
+  NavigatorStackParamList,
+  navigatorParams,
+} from '@/navigation/navigation';
 
 // Define the type for your form data
 interface SignUpForm {
   id: string;
-  birthdate: string;
-  gender: string;
+  birthdate: number | undefined;
+  gender: '남자' | '여자' | undefined;
   password: string;
   confirmPassword: string;
   nickname: string;
@@ -31,8 +34,8 @@ const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
   } = useForm<SignUpForm>({
     defaultValues: {
       id: '',
-      birthdate: '',
-      gender: '',
+      birthdate: undefined,
+      gender: undefined,
       password: '',
       confirmPassword: '',
       nickname: '',
@@ -75,10 +78,11 @@ const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
 
       <FormInput
         label="생년월일"
-        placeholder="YYYY-MM-DD"
+        placeholder="YYYYMMDD"
         name="birthdate"
         rules={{ required: '생년월일을 입력하세요' }}
         control={control}
+        keyboardType="numeric"
       />
       <ErrorMessage
         errors={errors}
@@ -88,12 +92,11 @@ const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
         )}
       />
 
-      <FormInput
-        label="성별"
-        placeholder="성별"
+      <FormRadioButton
         name="gender"
-        rules={{ required: '성별을 입력하세요' }}
         control={control}
+        options={['남자', '여자']}
+        rules={{ required: '성별을 선택하세요' }}
       />
       <ErrorMessage
         errors={errors}
@@ -110,6 +113,7 @@ const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
         rules={{ required: '비밀번호를 입력하세요' }}
         control={control}
         secureTextEntry
+        textContentType="none"
       />
       <ErrorMessage
         errors={errors}
@@ -126,6 +130,7 @@ const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
         rules={{ required: '비밀번호를 다시 입력하세요' }}
         control={control}
         secureTextEntry
+        textContentType="none"
       />
       <ErrorMessage
         errors={errors}
