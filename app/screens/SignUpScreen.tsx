@@ -4,6 +4,9 @@ import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import { FormInput } from '../shared/components/Input/Input';
 import axiosInstance from '../shared/utils/axiosInstance';
+import { StackScreenProps } from '@react-navigation/stack';
+import { NavigatorStackParamList } from '@/rootLayout';
+import navigatorParams from '@/navigation/navigation';
 
 // Define the type for your form data
 interface SignUpForm {
@@ -15,7 +18,12 @@ interface SignUpForm {
   nickname: string;
 }
 
-const SignUpScreen = () => {
+type SignUpScreenProps = StackScreenProps<
+  NavigatorStackParamList,
+  typeof navigatorParams.SIGNUP
+>;
+
+const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
   const {
     control,
     handleSubmit,
@@ -144,6 +152,11 @@ const SignUpScreen = () => {
 
       <Button title="회원가입" onPress={handleSubmit(onSubmit)} />
       {message && <Text>{message}</Text>}
+
+      <Button
+        title="로그인 화면으로 돌아가기"
+        onPress={() => navigation.navigate(navigatorParams.LOGIN)}
+      />
     </View>
   );
 };
