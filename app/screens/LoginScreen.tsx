@@ -5,8 +5,9 @@ import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import { useAuthStore } from '../store/useAuthStore';
 import axiosInstance from '../shared/utils/axiosInstance';
-import authNavigations from '@/navigation/navigation';
+import navigatorParams from '@/navigation/navigation';
 import { StackScreenProps } from '@react-navigation/stack';
+import { NavigatorStackParamList } from '@/rootLayout';
 
 // Define the type for your form data
 interface LoginForm {
@@ -14,9 +15,12 @@ interface LoginForm {
   password: string;
 }
 
-type LoginScreenProps = StackScreenProps<>;
+type LoginScreenProps = StackScreenProps<
+  NavigatorStackParamList,
+  typeof navigatorParams.LOGIN
+>;
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }: LoginScreenProps) => {
   const {
     control,
     handleSubmit,
@@ -81,12 +85,12 @@ const LoginScreen = () => {
       <View style={styles.footer}>
         <Button
           title="회원가입"
-          onPress={() => navigation.navigate(authNavigations.SIGNUP)}
+          onPress={() => navigation.navigate(navigatorParams.SIGNUP)}
         />
         <Button
           title="비밀번호 찾기"
           onPress={() => {
-            /* 비밀번호 찾기 로직 */
+            navigation.navigate(navigatorParams.FORGOT_PASSWORD);
           }}
         />
       </View>
