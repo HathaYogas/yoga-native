@@ -1,8 +1,8 @@
-const authNavigations = {
-  AUTH_HOME: 'AUTH_HOME',
+const navigatorParams = {
+  HOME: 'HOME',
   LOGIN: 'LOGIN',
   SIGNUP: 'SIGNUP',
   FORGOT_PASSWORD: 'FORGOT_PASSWORD',
 } as const;
 
-export default authNavigations;
+export default navigatorParams;
