@@ -5,8 +5,10 @@ import { ErrorMessage } from '@hookform/error-message';
 import { FormInput } from '../shared/components/Input/Input';
 import axiosInstance from '../shared/utils/axiosInstance';
 import { StackScreenProps } from '@react-navigation/stack';
-import { NavigatorStackParamList } from '@/rootLayout';
-import navigatorParams from '@/navigation/navigation';
+import {
+  navigatorParams,
+  NavigatorStackParamList,
+} from '@/navigation/navigation';
 
 // Define the type for your form data
 interface ForgotPasswordForm {
