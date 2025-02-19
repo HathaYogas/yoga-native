@@ -5,12 +5,16 @@ import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import { useAuthStore } from '../store/useAuthStore';
 import axiosInstance from '../shared/utils/axiosInstance';
+import authNavigations from '@/navigation/navigation';
+import { StackScreenProps } from '@react-navigation/stack';
 
 // Define the type for your form data
 interface LoginForm {
   id: string;
   password: string;
 }
+
+type LoginScreenProps = StackScreenProps<>;
 
 const LoginScreen = () => {
   const {
@@ -77,9 +81,7 @@ const LoginScreen = () => {
       <View style={styles.footer}>
         <Button
           title="회원가입"
-          onPress={() => {
-            /* 회원가입 로직 */
-          }}
+          onPress={() => navigation.navigate(authNavigations.SIGNUP)}
         />
         <Button
           title="비밀번호 찾기"
