@@ -160,7 +160,7 @@ const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
 
       <Button
         title="로그인 화면으로 돌아가기"
-        onPress={() => navigation.navigate(navigatorParams.LOGIN)}
+        onPress={() => navigation.pop(1)}
       />
     </View>
   );
