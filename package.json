@@ -3,9 +3,9 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "lint": "expo lint",
     "lint:fix": "eslint . --fix",
@@ -17,7 +17,10 @@
     "test:coverage": "jest --coverage",
     "reset-project": "node ./scripts/reset-project.js",
     "build:android": "eas build -p android",
-    "build:ios": "eas build -p ios"
+    "build:ios": "eas build -p ios",
+    "ios:local:build": "xcodebuild -workspace ios/YourApp.xcworkspace -scheme YourApp -configuration Release archive -archivePath ios/build/YourApp.xcarchive",
+    "ios:local:export": "xcodebuild -exportArchive -archivePath ios/build/YourApp.xcarchive -exportPath ios/build/ -exportOptionsPlist ios/exportOptions.plist",
+    "ios:local:testflight": "fastlane beta"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
@@ -40,7 +43,7 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-hook-form": "^7.43.0",
-    "react-native": "^0.76.7",
+    "react-native": "0.76.7",
     "react-native-error-boundary": "^1.2.7",
     "react-native-gesture-handler": "~2.20.2",
     "react-native-reanimated": "~3.16.1",
