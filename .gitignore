@@ -48,6 +48,9 @@ google-services.json      # Firebase Android config
 *.p8                     # Apple Push Notification certificates
 *.pem                    # SSL/TLS security files
 
+# masOS
+.DS_Store
+
 # Android
 .idea
 .project
