@@ -1,38 +1,75 @@
-# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
-
-# dependencies
+# Dependencies
 node_modules/
+vendor/
 
 # Expo
 .expo/
+.expo-shared/
+expo-env.d.ts
 dist/
 web-build/
-expo-env.d.ts
-
-# Native
-*.orig.*
-*.jks
-*.p8
-*.p12
-*.key
-*.mobileprovision
+expo-debug.log
 
 # Metro
 .metro-health-check*
 
-# debug
+# Debug
 npm-debug.*
 yarn-debug.*
 yarn-error.*
 
-# macOS
-.DS_Store
-*.pem
-
-# local env files
+# Environment
 .env*.local
+.env.default
+.ruby-version
 
-# typescript
+# TypeScript
 *.tsbuildinfo
 
-app-example
+# Native Secure Files - iOS
+ios/*.cer                   # Certificate files
+ios/*.certSigningRequest    # Certificate signing request
+ios/*.p12                   # iOS certificates
+ios/*.mobileprovision      # iOS provisioning profiles
+GoogleService-Info.plist   # Firebase iOS config
+
+# Native Secure Files - Android
+android/app/debug
+android/app/release
+android/keystores
+*.keystore                 # Android keystore
+*.jks                     # Android key store
+google-services.json      # Firebase Android config
+
+# Other Secure Files
+*.key                     # Private key files
+*.der                    # DER encoded certificates
+*.pfx                    # PKCS#12 certificates
+*.p8                     # Apple Push Notification certificates
+*.pem                    # SSL/TLS security files
+
+# masOS
+.DS_Store
+
+# Android
+.idea
+.project
+.settings
+.classpath
+*.hprof
+/build/
+.gradle
+local.properties
+*.iml
+
+# Fastlane - Android
+android/fastlane/report.xml
+android/fastlane/Preview.html
+android/fastlane/test_output
+fastlane/metadata
+
+# Testing
+/coverage
+/reports
+*.js.meta
+*.stackdump

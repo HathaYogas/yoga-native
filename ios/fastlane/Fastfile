@@ -1,0 +1,29 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Push a new beta build to TestFlight"
+  lane :beta do
+    # 인증서 및 프로비저닝 프로파일을 다운로드하고 설정
+    match(type: "appstore")
+    
+    increment_build_number(xcodeproj: "yoganative.xcodeproj")
+    build_app(workspace: "yoganative.xcworkspace", scheme: "yoganative")
+    upload_to_testflight
+  end
+end
+
