@@ -13,7 +13,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 
 // Define the type for your form data
 interface LoginForm {
-  id: string;
+  email: string;
   password: string;
 }
 
@@ -29,7 +29,7 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
     formState: { errors },
   } = useForm<LoginForm>({
     defaultValues: {
-      id: '',
+      email: '',
       password: '',
     },
   }); // Use the defined type here
@@ -40,7 +40,7 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
   const onSubmit = async (data: LoginForm) => {
     try {
       await axiosInstance.post('/api/login', {
-        id: data.id,
+        email: data.email,
         password: data.password,
       });
 
@@ -57,13 +57,13 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
       <FormInput
         label="아이디"
         placeholder="아이디"
-        name="id"
+        name="email"
         rules={{ required: '아이디를 입력하세요' }}
         control={control}
       />
       <ErrorMessage
         errors={errors}
-        name="id"
+        name="email"
         render={({ message }) => (
           <Text style={styles.errorText}>{message}</Text>
         )}
