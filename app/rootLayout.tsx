@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen';
-import SignUpScreen from './screens/SignUpScreen';
+import JoinScreen from './screens/JoinScreen';
 import { useAuthStore } from './store/useAuthStore';
 import {
   navigatorParams,
@@ -19,7 +19,7 @@ export default function RootLayout() {
     <Stack.Navigator initialRouteName={navigatorParams.LOGIN}>
       <Stack.Screen name={navigatorParams.HOME} component={HomeScreen} />
       <Stack.Screen name={navigatorParams.LOGIN} component={LoginScreen} />
-      <Stack.Screen name={navigatorParams.SIGNUP} component={SignUpScreen} />
+      <Stack.Screen name={navigatorParams.JOIN} component={JoinScreen} />
       <Stack.Screen
         name={navigatorParams.FORGOT_PASSWORD}
         component={ForgotPasswordScreen}

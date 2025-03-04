@@ -87,7 +87,7 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
       <View style={styles.footer}>
         <Button
           title="회원가입"
-          onPress={() => navigation.navigate(navigatorParams.SIGNUP)}
+          onPress={() => navigation.navigate(navigatorParams.JOIN)}
         />
         <Button
           title="비밀번호 찾기"

@@ -12,7 +12,7 @@ import {
 } from '@/navigation/navigation';
 
 // Define the type for your form data
-interface SignUpForm {
+interface JoinForm {
   email: string;
   birthdate: number | undefined;
   gender: '남자' | '여자' | undefined;
@@ -21,17 +21,17 @@ interface SignUpForm {
   name: string;
 }
 
-type SignUpScreenProps = StackScreenProps<
+type JoinScreenProps = StackScreenProps<
   NavigatorStackParamList,
-  typeof navigatorParams.SIGNUP
+  typeof navigatorParams.JOIN
 >;
 
-const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
+const JoinScreen = ({ navigation }: JoinScreenProps) => {
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignUpForm>({
+  } = useForm<JoinForm>({
     defaultValues: {
       email: '',
       birthdate: undefined,
@@ -44,7 +44,7 @@ const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
 
   const [message, setMessage] = useState('');
 
-  const onSubmit = async (data: SignUpForm) => {
+  const onSubmit = async (data: JoinForm) => {
     if (data.password !== data.confirmPassword) {
       setMessage('비밀번호가 일치하지 않습니다.');
       return;
@@ -190,4 +190,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignUpScreen;
+export default JoinScreen;
