@@ -3,7 +3,7 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import { FormInput } from '../shared/components/Input/Input';
-import { FormRadioButton } from '../shared/components/RadioButton/RadioButton';
+// import { FormRadioButton } from '../shared/components/RadioButton/RadioButton';
 import axiosInstance from '../shared/utils/axiosInstance';
 import { StackScreenProps } from '@react-navigation/stack';
 import {
@@ -13,12 +13,12 @@ import {
 
 // Define the type for your form data
 interface SignUpForm {
-  id: string;
+  email: string;
   birthdate: number | undefined;
   gender: '남자' | '여자' | undefined;
   password: string;
   confirmPassword: string;
-  nickname: string;
+  name: string;
 }
 
 type SignUpScreenProps = StackScreenProps<
@@ -33,12 +33,12 @@ const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
     formState: { errors },
   } = useForm<SignUpForm>({
     defaultValues: {
-      id: '',
+      email: '',
       birthdate: undefined,
       gender: undefined,
       password: '',
       confirmPassword: '',
-      nickname: '',
+      name: '',
     },
   });
 
@@ -51,8 +51,17 @@ const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
     }
 
     try {
-      await axiosInstance.post('/api/signup', data);
-      setMessage('회원가입 성공!');
+      const { confirmPassword, ...signUpData } = data;
+      await axiosInstance.post('/join', signUpData);
+      setMessage('회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.');
+
+      // 2초 후에 로그인 페이지로 이동
+      setTimeout(() => {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: navigatorParams.LOGIN }],
+        });
+      }, 2000);
     } catch (error) {
       setMessage('회원가입 실패');
     }
@@ -62,21 +71,21 @@ const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
     <View style={styles.container}>
       <Text style={styles.title}>회원가입</Text>
       <FormInput
-        label="아이디"
-        placeholder="아이디"
-        name="id"
-        rules={{ required: '아이디를 입력하세요' }}
+        label="이메일"
+        placeholder="이메일"
+        name="email"
+        rules={{ required: '이메일을 입력하세요' }}
         control={control}
       />
       <ErrorMessage
         errors={errors}
-        name="id"
+        name="email"
         render={({ message }) => (
           <Text style={styles.errorText}>{message}</Text>
         )}
       />
 
-      <FormInput
+      {/* <FormInput
         label="생년월일"
         placeholder="YYYYMMDD"
         name="birthdate"
@@ -90,9 +99,9 @@ const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
         render={({ message }) => (
           <Text style={styles.errorText}>{message}</Text>
         )}
-      />
+      /> */}
 
-      <FormRadioButton
+      {/* <FormRadioButton
         name="gender"
         control={control}
         options={['남자', '여자']}
@@ -104,7 +113,7 @@ const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
         render={({ message }) => (
           <Text style={styles.errorText}>{message}</Text>
         )}
-      />
+      /> */}
 
       <FormInput
         label="비밀번호"
@@ -143,13 +152,13 @@ const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
       <FormInput
         label="닉네임"
         placeholder="닉네임"
-        name="nickname"
+        name="name"
         rules={{ required: '닉네임을 입력하세요' }}
         control={control}
       />
       <ErrorMessage
         errors={errors}
-        name="nickname"
+        name="name"
         render={({ message }) => (
           <Text style={styles.errorText}>{message}</Text>
         )}
