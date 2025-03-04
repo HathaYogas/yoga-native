@@ -1,81 +1,90 @@
 import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-import Input from '../shared/components/Input/Input';
-import axios from 'axios';
-import { useForm, Controller } from 'react-hook-form';
-import { asyncHandler } from '../utils/asyncHandler';
+import { FormInput, FormPasswordInput } from '../shared/components/Input/Input';
+import { useForm } from 'react-hook-form';
+import { ErrorMessage } from '@hookform/error-message';
+import { useAuthStore } from '../store/useAuthStore';
+import axiosInstance from '../shared/utils/axiosInstance';
+import {
+  navigatorParams,
+  NavigatorStackParamList,
+} from '@/navigation/navigation';
+import { StackScreenProps } from '@react-navigation/stack';
 
 // Define the type for your form data
 interface LoginForm {
-  id: string;
-  pw: string;
+  email: string;
+  password: string;
 }
 
-const LoginScreen = () => {
+type LoginScreenProps = StackScreenProps<
+  NavigatorStackParamList,
+  typeof navigatorParams.LOGIN
+>;
+
+const LoginScreen = ({ navigation }: LoginScreenProps) => {
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginForm>(); // Use the defined type here
+  } = useForm<LoginForm>({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  }); // Use the defined type here
+
   const [message, setMessage] = useState('');
+  const login = useAuthStore((state) => state.login);
 
   const onSubmit = async (data: LoginForm) => {
-    // Use the defined type here
-    if (!data.id) {
-      setMessage('id가 없다');
-      return;
-    }
-    if (!data.pw) {
-      setMessage('pw가 없다');
-      return;
-    }
+    try {
+      await axiosInstance.post('/login', {
+        email: data.email,
+        password: data.password,
+      });
 
-    await asyncHandler(
-      () => axios.get('/api/login', { params: { id: data.id, pw: data.pw } }),
-      (responseData) => {
-        setMessage(responseData.data.message);
-      },
-      () => {
-        setMessage('로그인 실패');
-      }
-    );
+      // 로그인 상태 변경
+      login();
+
+      // 홈 화면으로 이동 (네비게이션 스택 초기화)
+      navigation.reset({
+        index: 0,
+        routes: [{ name: navigatorParams.HOME }],
+      });
+    } catch (error) {
+      setMessage('로그인 실패');
+    }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>로그인</Text>
-      <Controller
+      <FormInput
+        label="아이디"
+        placeholder="아이디"
+        name="email"
+        rules={{ required: '아이디를 입력하세요' }}
         control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <Input
-            label="이메일"
-            placeholder="이메일"
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-          />
-        )}
-        name="id"
-        rules={{ required: true }}
       />
-      {errors.id && <Text style={styles.errorText}>id가 없다</Text>}
+      <ErrorMessage
+        errors={errors}
+        name="email"
+        render={({ message }) => (
+          <Text style={styles.errorText}>{message}</Text>
+        )}
+      />
 
-      <Controller
+      <FormPasswordInput
+        label="비밀번호"
+        placeholder="비밀번호"
+        name="password"
         control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <Input
-            label="비밀번호"
-            placeholder="비밀번호"
-            secureTextEntry
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-          />
-        )}
-        name="pw"
-        rules={{ required: true }}
+        rules={{ required: '비밀번호를 입력하세요' }}
       />
-      {errors.pw && <Text style={styles.errorText}>pw가 없다</Text>}
+      {errors.password && (
+        <Text style={styles.errorText}>{errors.password.message}</Text>
+      )}
 
       <Button title="로그인" onPress={handleSubmit(onSubmit)} />
       {message && <Text>{message}</Text>}
@@ -83,14 +92,12 @@ const LoginScreen = () => {
       <View style={styles.footer}>
         <Button
           title="회원가입"
-          onPress={() => {
-            /* 회원가입 로직 */
-          }}
+          onPress={() => navigation.navigate(navigatorParams.JOIN)}
         />
         <Button
           title="비밀번호 찾기"
           onPress={() => {
-            /* 비밀번호 찾기 로직 */
+            navigation.navigate(navigatorParams.FORGOT_PASSWORD);
           }}
         />
       </View>
