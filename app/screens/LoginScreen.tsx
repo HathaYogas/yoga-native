@@ -39,13 +39,19 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
 
   const onSubmit = async (data: LoginForm) => {
     try {
-      await axiosInstance.post('/api/login', {
+      await axiosInstance.post('/login', {
         email: data.email,
         password: data.password,
       });
 
-      // 서버가 쿠키를 설정하므로, 단순히 로그인 상태만 변경
+      // 로그인 상태 변경
       login();
+
+      // 홈 화면으로 이동 (네비게이션 스택 초기화)
+      navigation.reset({
+        index: 0,
+        routes: [{ name: navigatorParams.HOME }],
+      });
     } catch (error) {
       setMessage('로그인 실패');
     }
