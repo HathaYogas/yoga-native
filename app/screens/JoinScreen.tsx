@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
-import { FormInput } from '../shared/components/Input/Input';
+import { FormInput, FormPasswordInput } from '../shared/components/Input/Input';
 // import { FormRadioButton } from '../shared/components/RadioButton/RadioButton';
 import axiosInstance from '../shared/utils/axiosInstance';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -115,13 +115,12 @@ const JoinScreen = ({ navigation }: JoinScreenProps) => {
         )}
       /> */}
 
-      <FormInput
+      <FormPasswordInput
         label="비밀번호"
         placeholder="비밀번호"
         name="password"
         rules={{ required: '비밀번호를 입력하세요' }}
         control={control}
-        secureTextEntry
         textContentType="none"
       />
       <ErrorMessage
@@ -132,13 +131,12 @@ const JoinScreen = ({ navigation }: JoinScreenProps) => {
         )}
       />
 
-      <FormInput
+      <FormPasswordInput
         label="비밀번호 확인"
         placeholder="비밀번호 확인"
         name="confirmPassword"
         rules={{ required: '비밀번호를 다시 입력하세요' }}
         control={control}
-        secureTextEntry
         textContentType="none"
       />
       <ErrorMessage
