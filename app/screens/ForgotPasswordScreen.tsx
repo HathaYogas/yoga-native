@@ -10,8 +10,9 @@ import {
 } from '@/navigation/navigation';
 import { useNavigation } from '@react-navigation/native';
 
-import { FormInput } from '../shared/components/Input/Input';
-import axiosInstance from '../shared/utils/axiosInstance';
+import { FormInput } from '@/shared/components/Input/Input';
+import axiosInstance from '@/shared/utils/axiosInstance';
+import { forgotPasswordMessage } from '@/shared/constants/message';
 
 interface ForgotPasswordForm {
   id: string;
@@ -39,9 +40,9 @@ const ForgotPasswordScreen = () => {
   const onSubmit = async (data: ForgotPasswordForm) => {
     try {
       await axiosInstance.post('/api/forgot-password', { id: data.id });
-      setMessage('가입 시 입력한 이메일로 임시 비밀번호를 보냈습니다.');
+      setMessage(forgotPasswordMessage.success.forgotPassword);
     } catch (error) {
-      setMessage('비밀번호 찾기 실패');
+      setMessage(forgotPasswordMessage.error.emailNotFound);
     }
   };
 
@@ -52,7 +53,7 @@ const ForgotPasswordScreen = () => {
         label="아이디"
         placeholder="아이디"
         name="id"
-        rules={{ required: '아이디를 입력하세요' }}
+        rules={{ required: forgotPasswordMessage.email.required }}
         control={control}
       />
       <ErrorMessage

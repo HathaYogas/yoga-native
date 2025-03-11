@@ -3,14 +3,15 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 
 import {
   NavigatorStackParamList,
   navigatorParams,
 } from '@/navigation/navigation';
-import { FormInput, FormPasswordInput } from '../shared/components/Input/Input';
-import axiosInstance from '../shared/utils/axiosInstance';
-import { useNavigation } from '@react-navigation/native';
+import { FormInput, FormPasswordInput } from '@/shared/components/Input/Input';
+import axiosInstance from '@/shared/utils/axiosInstance';
+import { joinMessage } from '@/shared/constants/message';
 
 interface JoinForm {
   email: string;
@@ -47,21 +48,21 @@ const JoinScreen = () => {
 
   const onSubmit = async (data: JoinForm) => {
     if (data.password !== data.confirmPassword) {
-      setMessage('비밀번호가 일치하지 않습니다.');
+      setMessage(joinMessage.error.passwordNotMatch);
       return;
     }
 
     try {
       const { confirmPassword, ...signUpData } = data;
       await axiosInstance.post('/join', signUpData);
-      setMessage('회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.');
+      setMessage(joinMessage.success.join);
 
       // 2초 후에 로그인 페이지로 이동
       setTimeout(() => {
         navigation.popTo(navigatorParams.LOGIN);
       }, 2000);
     } catch (error) {
-      setMessage('회원가입 실패');
+      setMessage(joinMessage.error.joinFailed);
     }
   };
 
@@ -72,7 +73,7 @@ const JoinScreen = () => {
         label="이메일"
         placeholder="이메일"
         name="email"
-        rules={{ required: '이메일을 입력하세요' }}
+        rules={{ required: joinMessage.email.required }}
         control={control}
       />
       <ErrorMessage
@@ -87,7 +88,7 @@ const JoinScreen = () => {
         label="비밀번호"
         placeholder="비밀번호"
         name="password"
-        rules={{ required: '비밀번호를 입력하세요' }}
+        rules={{ required: joinMessage.password.required }}
         control={control}
         textContentType="none"
       />
@@ -103,7 +104,7 @@ const JoinScreen = () => {
         label="비밀번호 확인"
         placeholder="비밀번호 확인"
         name="confirmPassword"
-        rules={{ required: '비밀번호를 다시 입력하세요' }}
+        rules={{ required: joinMessage.passwordConfirm.required }}
         control={control}
         textContentType="none"
       />
@@ -119,7 +120,7 @@ const JoinScreen = () => {
         label="닉네임"
         placeholder="닉네임"
         name="name"
-        rules={{ required: '닉네임을 입력하세요' }}
+        rules={{ required: joinMessage.name.required }}
         control={control}
       />
       <ErrorMessage

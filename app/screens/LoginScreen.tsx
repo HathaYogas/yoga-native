@@ -8,11 +8,12 @@ import {
   navigatorParams,
   NavigatorStackParamList,
 } from '@/navigation/navigation';
-import axiosInstance from '@/shared/utils/axiosInstance';
-
-import { FormInput, FormPasswordInput } from '../shared/components/Input/Input';
-import { useAuthStore } from '../store/useAuthStore';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+import { FormInput, FormPasswordInput } from '@/shared/components/Input/Input';
+import { useAuthStore } from '@/store/useAuthStore';
+import { loginMessage } from '@/shared/constants/message';
+import axiosInstance from '@/shared/utils/axiosInstance';
 
 interface LoginForm {
   email: string;
@@ -53,7 +54,7 @@ const LoginScreen = () => {
         routes: [{ name: navigatorParams.HOME }],
       });
     } catch (error) {
-      setMessage('로그인 실패');
+      setMessage(loginMessage.error.loginFailed);
     }
   };
 
@@ -61,10 +62,10 @@ const LoginScreen = () => {
     <View style={styles.container}>
       <Text style={styles.title}>로그인</Text>
       <FormInput
-        label="아이디"
-        placeholder="아이디"
+        label="이메일"
+        placeholder="이메일"
         name="email"
-        rules={{ required: '아이디를 입력하세요' }}
+        rules={{ required: loginMessage.email.required }}
         control={control}
       />
       <ErrorMessage
@@ -80,11 +81,15 @@ const LoginScreen = () => {
         placeholder="비밀번호"
         name="password"
         control={control}
-        rules={{ required: '비밀번호를 입력하세요' }}
+        rules={{ required: loginMessage.password.required }}
       />
-      {errors.password && (
-        <Text style={styles.errorText}>{errors.password.message}</Text>
-      )}
+      <ErrorMessage
+        errors={errors}
+        name="password"
+        render={({ message }) => (
+          <Text style={styles.errorText}>{message}</Text>
+        )}
+      />
 
       <Button title="로그인" onPress={handleSubmit(onSubmit)} />
       {message && <Text>{message}</Text>}
