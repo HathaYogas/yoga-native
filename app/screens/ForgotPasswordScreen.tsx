@@ -2,24 +2,28 @@ import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
-import { FormInput } from '../shared/components/Input/Input';
-import axiosInstance from '../shared/utils/axiosInstance';
-import { StackScreenProps } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
 import {
   navigatorParams,
   NavigatorStackParamList,
 } from '@/navigation/navigation';
+import { useNavigation } from '@react-navigation/native';
+
+import { FormInput } from '../shared/components/Input/Input';
+import axiosInstance from '../shared/utils/axiosInstance';
 
 interface ForgotPasswordForm {
   id: string;
 }
 
-type ForgotPasswordScreenProps = StackScreenProps<
+type ForgotPasswordScreenProps = NativeStackNavigationProp<
   NavigatorStackParamList,
   typeof navigatorParams.FORGOT_PASSWORD
 >;
 
-const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenProps) => {
+const ForgotPasswordScreen = () => {
+  const navigation = useNavigation<ForgotPasswordScreenProps>();
   const {
     control,
     handleSubmit,
@@ -64,7 +68,7 @@ const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenProps) => {
 
       <Button
         title="로그인 화면으로 돌아가기"
-        onPress={() => navigation.pop(1)}
+        onPress={() => navigation.popTo(navigatorParams.LOGIN)}
       />
     </View>
   );

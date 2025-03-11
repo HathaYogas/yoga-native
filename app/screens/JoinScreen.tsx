@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
-import { FormInput, FormPasswordInput } from '../shared/components/Input/Input';
-import axiosInstance from '../shared/utils/axiosInstance';
-import { StackScreenProps } from '@react-navigation/stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
 import {
   NavigatorStackParamList,
   navigatorParams,
 } from '@/navigation/navigation';
+import { FormInput, FormPasswordInput } from '../shared/components/Input/Input';
+import axiosInstance from '../shared/utils/axiosInstance';
+import { useNavigation } from '@react-navigation/native';
 
 interface JoinForm {
   email: string;
@@ -19,12 +21,13 @@ interface JoinForm {
   name: string;
 }
 
-type JoinScreenProps = StackScreenProps<
+type JoinScreenNavigationProp = NativeStackNavigationProp<
   NavigatorStackParamList,
   typeof navigatorParams.JOIN
 >;
 
-const JoinScreen = ({ navigation }: JoinScreenProps) => {
+const JoinScreen = () => {
+  const navigation = useNavigation<JoinScreenNavigationProp>();
   const {
     control,
     handleSubmit,
@@ -55,10 +58,7 @@ const JoinScreen = ({ navigation }: JoinScreenProps) => {
 
       // 2초 후에 로그인 페이지로 이동
       setTimeout(() => {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: navigatorParams.LOGIN }],
-        });
+        navigation.popTo(navigatorParams.LOGIN);
       }, 2000);
     } catch (error) {
       setMessage('회원가입 실패');
@@ -135,7 +135,7 @@ const JoinScreen = ({ navigation }: JoinScreenProps) => {
 
       <Button
         title="로그인 화면으로 돌아가기"
-        onPress={() => navigation.pop(1)}
+        onPress={() => navigation.popTo(navigatorParams.LOGIN)}
       />
     </View>
   );

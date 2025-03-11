@@ -1,28 +1,31 @@
 import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-import { FormInput, FormPasswordInput } from '../shared/components/Input/Input';
 import { useForm } from 'react-hook-form';
+import { useNavigation } from '@react-navigation/native';
 import { ErrorMessage } from '@hookform/error-message';
-import { useAuthStore } from '../store/useAuthStore';
-import axiosInstance from '../shared/utils/axiosInstance';
+
 import {
   navigatorParams,
   NavigatorStackParamList,
 } from '@/navigation/navigation';
-import { StackScreenProps } from '@react-navigation/stack';
+import axiosInstance from '@/shared/utils/axiosInstance';
 
-// Define the type for your form data
+import { FormInput, FormPasswordInput } from '../shared/components/Input/Input';
+import { useAuthStore } from '../store/useAuthStore';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
 interface LoginForm {
   email: string;
   password: string;
 }
 
-type LoginScreenProps = StackScreenProps<
+type LoginScreenNavigationProp = NativeStackNavigationProp<
   NavigatorStackParamList,
   typeof navigatorParams.LOGIN
 >;
 
-const LoginScreen = ({ navigation }: LoginScreenProps) => {
+const LoginScreen = () => {
+  const navigation = useNavigation<LoginScreenNavigationProp>();
   const {
     control,
     handleSubmit,
