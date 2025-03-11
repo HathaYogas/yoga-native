@@ -8,7 +8,7 @@ export default function HomeScreen() {
   return (
     <View>
       <Text>로그인 되고 나올 화면</Text>
-      <Button title="로그아웃" onPress={() => logout()} />
+      <Button title="로그아웃" onPress={logout} />
     </View>
   );
 }
