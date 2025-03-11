@@ -32,8 +32,7 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
       email: '',
       password: '',
     },
-  }); // Use the defined type here
-
+  });
   const [message, setMessage] = useState('');
   const login = useAuthStore((state) => state.login);
 
@@ -44,9 +43,7 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
         password: data.password,
       });
 
-      // 로그인 상태 변경
       login();
-
       // 홈 화면으로 이동 (네비게이션 스택 초기화)
       navigation.reset({
         index: 0,

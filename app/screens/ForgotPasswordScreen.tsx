@@ -10,7 +10,6 @@ import {
   NavigatorStackParamList,
 } from '@/navigation/navigation';
 
-// Define the type for your form data
 interface ForgotPasswordForm {
   id: string;
 }

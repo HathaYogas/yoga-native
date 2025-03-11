@@ -3,7 +3,6 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import { FormInput, FormPasswordInput } from '../shared/components/Input/Input';
-// import { FormRadioButton } from '../shared/components/RadioButton/RadioButton';
 import axiosInstance from '../shared/utils/axiosInstance';
 import { StackScreenProps } from '@react-navigation/stack';
 import {
@@ -11,7 +10,6 @@ import {
   navigatorParams,
 } from '@/navigation/navigation';
 
-// Define the type for your form data
 interface JoinForm {
   email: string;
   birthdate: number | undefined;
@@ -84,36 +82,6 @@ const JoinScreen = ({ navigation }: JoinScreenProps) => {
           <Text style={styles.errorText}>{message}</Text>
         )}
       />
-
-      {/* <FormInput
-        label="생년월일"
-        placeholder="YYYYMMDD"
-        name="birthdate"
-        rules={{ required: '생년월일을 입력하세요' }}
-        control={control}
-        keyboardType="numeric"
-      />
-      <ErrorMessage
-        errors={errors}
-        name="birthdate"
-        render={({ message }) => (
-          <Text style={styles.errorText}>{message}</Text>
-        )}
-      /> */}
-
-      {/* <FormRadioButton
-        name="gender"
-        control={control}
-        options={['남자', '여자']}
-        rules={{ required: '성별을 선택하세요' }}
-      />
-      <ErrorMessage
-        errors={errors}
-        name="gender"
-        render={({ message }) => (
-          <Text style={styles.errorText}>{message}</Text>
-        )}
-      /> */}
 
       <FormPasswordInput
         label="비밀번호"

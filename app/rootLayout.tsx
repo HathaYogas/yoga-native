@@ -15,15 +15,21 @@ export default function RootLayout() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   return (
-    // <Stack.Navigator initialRouteName={navigatorParams.HOME}>
-    <Stack.Navigator initialRouteName={navigatorParams.LOGIN}>
-      <Stack.Screen name={navigatorParams.HOME} component={HomeScreen} />
-      <Stack.Screen name={navigatorParams.LOGIN} component={LoginScreen} />
-      <Stack.Screen name={navigatorParams.JOIN} component={JoinScreen} />
-      <Stack.Screen
-        name={navigatorParams.FORGOT_PASSWORD}
-        component={ForgotPasswordScreen}
-      />
+    <Stack.Navigator>
+      {isLoggedIn ? (
+        <Stack.Group>
+          <Stack.Screen name={navigatorParams.HOME} component={HomeScreen} />
+        </Stack.Group>
+      ) : (
+        <Stack.Group>
+          <Stack.Screen name={navigatorParams.LOGIN} component={LoginScreen} />
+          <Stack.Screen name={navigatorParams.JOIN} component={JoinScreen} />
+          <Stack.Screen
+            name={navigatorParams.FORGOT_PASSWORD}
+            component={ForgotPasswordScreen}
+          />
+        </Stack.Group>
+      )}
     </Stack.Navigator>
   );
 }
