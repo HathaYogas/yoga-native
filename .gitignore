@@ -19,7 +19,8 @@ yarn-debug.*
 yarn-error.*
 
 # Environment
-.env*.local
+.env 
+*.local
 .env.default
 .ruby-version
 

@@ -54,7 +54,7 @@ const JoinScreen = () => {
 
     try {
       const { confirmPassword, ...signUpData } = data;
-      await axiosInstance.post('/join', signUpData);
+      await axiosInstance.post('/user/join', signUpData);
       setMessage(joinMessage.success.join);
 
       // 2초 후에 로그인 페이지로 이동

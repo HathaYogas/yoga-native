@@ -42,7 +42,7 @@ const LoginScreen = () => {
 
   const onSubmit = async (data: LoginForm) => {
     try {
-      await axiosInstance.post('/login', {
+      await axiosInstance.post('/user', {
         email: data.email,
         password: data.password,
       });
