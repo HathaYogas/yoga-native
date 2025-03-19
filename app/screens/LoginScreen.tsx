@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import { ErrorMessage } from '@hookform/error-message';
 
@@ -10,7 +10,7 @@ import {
 } from '@/navigation/navigation';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { FormInput, FormPasswordInput } from '@/shared/components/Input/Input';
+import { Input, PasswordInput } from '@/shared/components/Input/Input';
 import { useAuthStore } from '@/store/useAuthStore';
 import { loginMessage } from '@/shared/constants/message';
 import axiosInstance from '@/shared/utils/axiosInstance';
@@ -61,12 +61,19 @@ const LoginScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>로그인</Text>
-      <FormInput
-        label="이메일"
-        placeholder="이메일"
+      <Controller
+        control={control}
         name="email"
         rules={{ required: loginMessage.email.required }}
-        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <Input
+            label="이메일"
+            placeholder="이메일"
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+          />
+        )}
       />
       <ErrorMessage
         errors={errors}
@@ -76,12 +83,19 @@ const LoginScreen = () => {
         )}
       />
 
-      <FormPasswordInput
-        label="비밀번호"
-        placeholder="비밀번호"
-        name="password"
+      <Controller
         control={control}
+        name="password"
         rules={{ required: loginMessage.password.required }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <PasswordInput
+            label="비밀번호"
+            placeholder="비밀번호"
+            onChangeText={onChange}
+            onBlur={onBlur}
+            value={value}
+          />
+        )}
       />
       <ErrorMessage
         errors={errors}

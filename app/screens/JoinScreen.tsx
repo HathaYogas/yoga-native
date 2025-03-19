@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
@@ -9,7 +9,7 @@ import {
   NavigatorStackParamList,
   navigatorParams,
 } from '@/navigation/navigation';
-import { FormInput, FormPasswordInput } from '@/shared/components/Input/Input';
+import { Input, PasswordInput } from '@/shared/components/Input/Input';
 import axiosInstance from '@/shared/utils/axiosInstance';
 import { joinMessage } from '@/shared/constants/message';
 
@@ -69,12 +69,19 @@ const JoinScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>회원가입</Text>
-      <FormInput
-        label="이메일"
-        placeholder="이메일"
+      <Controller
+        control={control}
         name="email"
         rules={{ required: joinMessage.email.required }}
-        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <Input
+            label="이메일"
+            placeholder="이메일"
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+          />
+        )}
       />
       <ErrorMessage
         errors={errors}
@@ -84,13 +91,19 @@ const JoinScreen = () => {
         )}
       />
 
-      <FormPasswordInput
-        label="비밀번호"
-        placeholder="비밀번호"
+      <Controller
+        control={control}
         name="password"
         rules={{ required: joinMessage.password.required }}
-        control={control}
-        textContentType="none"
+        render={({ field: { onChange, onBlur, value } }) => (
+          <PasswordInput
+            label="비밀번호"
+            placeholder="비밀번호"
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+          />
+        )}
       />
       <ErrorMessage
         errors={errors}
@@ -100,13 +113,19 @@ const JoinScreen = () => {
         )}
       />
 
-      <FormPasswordInput
-        label="비밀번호 확인"
-        placeholder="비밀번호 확인"
+      <Controller
+        control={control}
         name="confirmPassword"
         rules={{ required: joinMessage.passwordConfirm.required }}
-        control={control}
-        textContentType="none"
+        render={({ field: { onChange, onBlur, value } }) => (
+          <PasswordInput
+            label="비밀번호 확인"
+            placeholder="비밀번호 확인"
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+          />
+        )}
       />
       <ErrorMessage
         errors={errors}
@@ -116,12 +135,19 @@ const JoinScreen = () => {
         )}
       />
 
-      <FormInput
-        label="닉네임"
-        placeholder="닉네임"
+      <Controller
+        control={control}
         name="name"
         rules={{ required: joinMessage.name.required }}
-        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <Input
+            label="닉네임"
+            placeholder="닉네임"
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+          />
+        )}
       />
       <ErrorMessage
         errors={errors}
