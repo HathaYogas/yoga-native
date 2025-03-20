@@ -11,7 +11,7 @@ import {
 } from '@/navigation/navigation';
 import { Input, PasswordInput } from '@/shared/components/Input/Input';
 import axiosInstance from '@/shared/utils/axiosInstance';
-import { joinMessage } from '@/shared/constants/message';
+import { JOIN_MESSAGE } from '@/shared/constants/message';
 
 interface JoinForm {
   email: string;
@@ -48,21 +48,21 @@ const JoinScreen = () => {
 
   const onSubmit = async (data: JoinForm) => {
     if (data.password !== data.confirmPassword) {
-      setMessage(joinMessage.error.passwordNotMatch);
+      setMessage(JOIN_MESSAGE.error.passwordNotMatch);
       return;
     }
 
     try {
       const { confirmPassword, ...signUpData } = data;
       await axiosInstance.post('/user/join', signUpData);
-      setMessage(joinMessage.success.join);
+      setMessage(JOIN_MESSAGE.success.join);
 
       // 2초 후에 로그인 페이지로 이동
       setTimeout(() => {
         navigation.popTo(navigatorParams.LOGIN);
       }, 2000);
     } catch (error) {
-      setMessage(joinMessage.error.joinFailed);
+      setMessage(JOIN_MESSAGE.error.joinFailed);
     }
   };
 
@@ -72,7 +72,7 @@ const JoinScreen = () => {
       <Controller
         control={control}
         name="email"
-        rules={{ required: joinMessage.email.required }}
+        rules={{ required: JOIN_MESSAGE.email.required }}
         render={({ field: { onChange, onBlur, value } }) => (
           <Input
             label="이메일"
@@ -94,7 +94,7 @@ const JoinScreen = () => {
       <Controller
         control={control}
         name="password"
-        rules={{ required: joinMessage.password.required }}
+        rules={{ required: JOIN_MESSAGE.password.required }}
         render={({ field: { onChange, onBlur, value } }) => (
           <PasswordInput
             label="비밀번호"
@@ -116,7 +116,7 @@ const JoinScreen = () => {
       <Controller
         control={control}
         name="confirmPassword"
-        rules={{ required: joinMessage.passwordConfirm.required }}
+        rules={{ required: JOIN_MESSAGE.passwordConfirm.required }}
         render={({ field: { onChange, onBlur, value } }) => (
           <PasswordInput
             label="비밀번호 확인"
@@ -138,7 +138,7 @@ const JoinScreen = () => {
       <Controller
         control={control}
         name="name"
-        rules={{ required: joinMessage.name.required }}
+        rules={{ required: JOIN_MESSAGE.name.required }}
         render={({ field: { onChange, onBlur, value } }) => (
           <Input
             label="닉네임"

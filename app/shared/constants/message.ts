@@ -1,4 +1,4 @@
-export const loginMessage = {
+export const LOGIN_MESSAGE = {
   email: {
     required: '이메일을 입력해주세요',
   },
@@ -10,7 +10,7 @@ export const loginMessage = {
   },
 };
 
-export const joinMessage = {
+export const JOIN_MESSAGE = {
   email: {
     required: '이메일을 입력해주세요',
   },
@@ -30,7 +30,7 @@ export const joinMessage = {
   },
 };
 
-export const forgotPasswordMessage = {
+export const FORGOT_PASSWORD_MESSAGE = {
   email: {
     required: '이메일을 입력해주세요.',
   },

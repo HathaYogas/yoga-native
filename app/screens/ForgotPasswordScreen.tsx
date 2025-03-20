@@ -12,7 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Input } from '@/shared/components/Input/Input';
 import axiosInstance from '@/shared/utils/axiosInstance';
-import { forgotPasswordMessage } from '@/shared/constants/message';
+import { FORGOT_PASSWORD_MESSAGE } from '@/shared/constants/message';
 
 interface ForgotPasswordForm {
   id: string;
@@ -40,9 +40,9 @@ const ForgotPasswordScreen = () => {
   const onSubmit = async (data: ForgotPasswordForm) => {
     try {
       await axiosInstance.post('/api/forgot-password', { id: data.id });
-      setMessage(forgotPasswordMessage.success.forgotPassword);
+      setMessage(FORGOT_PASSWORD_MESSAGE.success.forgotPassword);
     } catch (error) {
-      setMessage(forgotPasswordMessage.error.emailNotFound);
+      setMessage(FORGOT_PASSWORD_MESSAGE.error.emailNotFound);
     }
   };
 
@@ -52,7 +52,7 @@ const ForgotPasswordScreen = () => {
       <Controller
         control={control}
         name="id"
-        rules={{ required: forgotPasswordMessage.email.required }}
+        rules={{ required: FORGOT_PASSWORD_MESSAGE.email.required }}
         render={({ field: { onChange, onBlur, value } }) => (
           <Input
             label="아이디"

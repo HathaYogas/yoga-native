@@ -12,7 +12,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { Input, PasswordInput } from '@/shared/components/Input/Input';
 import { useAuthStore } from '@/store/useAuthStore';
-import { loginMessage } from '@/shared/constants/message';
+import { LOGIN_MESSAGE } from '@/shared/constants/message';
 import axiosInstance from '@/shared/utils/axiosInstance';
 
 interface LoginForm {
@@ -54,7 +54,7 @@ const LoginScreen = () => {
         routes: [{ name: navigatorParams.HOME }],
       });
     } catch (error) {
-      setMessage(loginMessage.error.loginFailed);
+      setMessage(LOGIN_MESSAGE.error.loginFailed);
     }
   };
 
@@ -64,7 +64,7 @@ const LoginScreen = () => {
       <Controller
         control={control}
         name="email"
-        rules={{ required: loginMessage.email.required }}
+        rules={{ required: LOGIN_MESSAGE.email.required }}
         render={({ field: { onChange, onBlur, value } }) => (
           <Input
             label="이메일"
@@ -86,7 +86,7 @@ const LoginScreen = () => {
       <Controller
         control={control}
         name="password"
-        rules={{ required: loginMessage.password.required }}
+        rules={{ required: LOGIN_MESSAGE.password.required }}
         render={({ field: { onChange, onBlur, value } }) => (
           <PasswordInput
             label="비밀번호"
