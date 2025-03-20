@@ -1,44 +1,61 @@
 import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-import Input from '../shared/components/Input/Input';
-import axios from 'axios';
-import { useForm, Controller } from 'react-hook-form';
-import { asyncHandler } from '../utils/asyncHandler';
+import { Controller, useForm } from 'react-hook-form';
+import { useNavigation } from '@react-navigation/native';
+import { ErrorMessage } from '@hookform/error-message';
 
-// Define the type for your form data
+import {
+  navigatorParams,
+  NavigatorStackParamList,
+} from '@/navigation/navigation';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+import { Input, PasswordInput } from '@/shared/components/Input/Input';
+import { useAuthStore } from '@/store/useAuthStore';
+import { LOGIN_MESSAGE } from '@/shared/constants/message';
+import axiosInstance from '@/shared/utils/axiosInstance';
+
 interface LoginForm {
-  id: string;
-  pw: string;
+  email: string;
+  password: string;
 }
 
+type LoginScreenNavigationProp = NativeStackNavigationProp<
+  NavigatorStackParamList,
+  typeof navigatorParams.LOGIN
+>;
+
 const LoginScreen = () => {
+  const navigation = useNavigation<LoginScreenNavigationProp>();
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginForm>(); // Use the defined type here
+  } = useForm<LoginForm>({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
   const [message, setMessage] = useState('');
+  const login = useAuthStore((state) => state.login);
 
   const onSubmit = async (data: LoginForm) => {
-    // Use the defined type here
-    if (!data.id) {
-      setMessage('id가 없다');
-      return;
-    }
-    if (!data.pw) {
-      setMessage('pw가 없다');
-      return;
-    }
+    try {
+      await axiosInstance.post('/user', {
+        email: data.email,
+        password: data.password,
+      });
 
-    await asyncHandler(
-      () => axios.get('/api/login', { params: { id: data.id, pw: data.pw } }),
-      (responseData) => {
-        setMessage(responseData.data.message);
-      },
-      () => {
-        setMessage('로그인 실패');
-      }
-    );
+      login();
+      // 홈 화면으로 이동 (네비게이션 스택 초기화)
+      navigation.reset({
+        index: 0,
+        routes: [{ name: navigatorParams.HOME }],
+      });
+    } catch (error) {
+      setMessage(LOGIN_MESSAGE.error.loginFailed);
+    }
   };
 
   return (
@@ -46,6 +63,8 @@ const LoginScreen = () => {
       <Text style={styles.title}>로그인</Text>
       <Controller
         control={control}
+        name="email"
+        rules={{ required: LOGIN_MESSAGE.email.required }}
         render={({ field: { onChange, onBlur, value } }) => (
           <Input
             label="이메일"
@@ -55,27 +74,36 @@ const LoginScreen = () => {
             value={value}
           />
         )}
-        name="id"
-        rules={{ required: true }}
       />
-      {errors.id && <Text style={styles.errorText}>id가 없다</Text>}
+      <ErrorMessage
+        errors={errors}
+        name="email"
+        render={({ message }) => (
+          <Text style={styles.errorText}>{message}</Text>
+        )}
+      />
 
       <Controller
         control={control}
+        name="password"
+        rules={{ required: LOGIN_MESSAGE.password.required }}
         render={({ field: { onChange, onBlur, value } }) => (
-          <Input
+          <PasswordInput
             label="비밀번호"
             placeholder="비밀번호"
-            secureTextEntry
-            onBlur={onBlur}
             onChangeText={onChange}
+            onBlur={onBlur}
             value={value}
           />
         )}
-        name="pw"
-        rules={{ required: true }}
       />
-      {errors.pw && <Text style={styles.errorText}>pw가 없다</Text>}
+      <ErrorMessage
+        errors={errors}
+        name="password"
+        render={({ message }) => (
+          <Text style={styles.errorText}>{message}</Text>
+        )}
+      />
 
       <Button title="로그인" onPress={handleSubmit(onSubmit)} />
       {message && <Text>{message}</Text>}
@@ -83,14 +111,12 @@ const LoginScreen = () => {
       <View style={styles.footer}>
         <Button
           title="회원가입"
-          onPress={() => {
-            /* 회원가입 로직 */
-          }}
+          onPress={() => navigation.navigate(navigatorParams.JOIN)}
         />
         <Button
           title="비밀번호 찾기"
           onPress={() => {
-            /* 비밀번호 찾기 로직 */
+            navigation.navigate(navigatorParams.FORGOT_PASSWORD);
           }}
         />
       </View>

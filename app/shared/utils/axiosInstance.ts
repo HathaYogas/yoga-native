@@ -1,33 +1,46 @@
 import axios from 'axios';
+import { useAuthStore } from '../../store/useAuthStore';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:3000/api', // 기본 API URL을 설정합니다.
-  timeout: 10000, // 요청 타임아웃 설정 (10초)
+  baseURL: process.env.API_URL,
+  timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
 });
 
-// 요청 인터셉터 추가 (필요한 경우)
 axiosInstance.interceptors.request.use(
-  (config) => {
-    // 요청 전에 수행할 작업
-    return config;
-  },
-  (error) => {
-    // 요청 오류 처리
-    return Promise.reject(error);
-  }
+  (config) => config,
+  (error) => Promise.reject(error)
 );
 
-// 응답 인터셉터 추가 (필요한 경우)
 axiosInstance.interceptors.response.use(
-  (response) => {
-    // 응답 데이터를 가공할 수 있습니다.
-    return response;
-  },
-  (error) => {
-    // 응답 오류 처리
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    // 액세스 토큰이 만료된 경우 (401 에러)
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        await axios.post(
+          '/api/refresh',
+          {},
+          {
+            withCredentials: true,
+          }
+        );
+
+        return axiosInstance(originalRequest);
+      } catch (error) {
+        // 리프레시 토큰도 만료된 경우
+        useAuthStore.getState().logout();
+        return Promise.reject(error);
+      }
+    }
+
     return Promise.reject(error);
   }
 );
