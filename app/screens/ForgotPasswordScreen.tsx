@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -10,7 +10,7 @@ import {
 } from '@/navigation/navigation';
 import { useNavigation } from '@react-navigation/native';
 
-import { FormInput } from '@/shared/components/Input/Input';
+import { Input } from '@/shared/components/Input/Input';
 import axiosInstance from '@/shared/utils/axiosInstance';
 import { forgotPasswordMessage } from '@/shared/constants/message';
 
@@ -49,12 +49,19 @@ const ForgotPasswordScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>비밀번호 찾기</Text>
-      <FormInput
-        label="아이디"
-        placeholder="아이디"
+      <Controller
+        control={control}
         name="id"
         rules={{ required: forgotPasswordMessage.email.required }}
-        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <Input
+            label="아이디"
+            placeholder="아이디"
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+          />
+        )}
       />
       <ErrorMessage
         errors={errors}
